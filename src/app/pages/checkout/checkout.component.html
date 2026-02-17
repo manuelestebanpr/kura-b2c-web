@@ -8,13 +8,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Tu carrito está vacío</h2>
-        <p class="text-gray-600 mb-6">Agrega exámenes para continuar con tu orden</p>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ 'CHECKOUT.EMPTY_CART' | translate }}</h2>
+        <p class="text-gray-600 mb-6">{{ 'CHECKOUT.EMPTY_CART_DESC' | translate }}</p>
         <button
           (click)="goToSearch()"
           class="px-6 py-3 bg-sky-500 text-white rounded-xl font-bold hover:bg-sky-600 transition"
         >
-          Buscar exámenes
+          {{ 'CHECKOUT.SEARCH_EXAMS' | translate }}
         </button>
       </div>
     }
@@ -28,31 +28,31 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 class="text-3xl font-bold text-gray-900 mb-2">¡Orden creada exitosamente!</h2>
-        <p class="text-gray-600 mb-8">Tu número de orden es: <span class="font-bold text-sky-500">{{ createdOrder()?.orderNumber }}</span></p>
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">{{ 'CHECKOUT.TICKET_TITLE' | translate }}</h2>
+        <p class="text-gray-600 mb-8">{{ 'CHECKOUT.TICKET_SUBTITLE' | translate }} <span class="font-bold text-sky-500">{{ createdOrder()?.orderNumber }}</span></p>
 
         <!-- Walk-in Ticket -->
         <div class="bg-white rounded-2xl shadow-lg p-8 max-w-md mx-auto mb-8">
           <div class="border-b border-dashed border-gray-300 pb-6 mb-6">
-            <p class="text-gray-500 text-sm uppercase tracking-wide mb-1">Código para el laboratorio</p>
+            <p class="text-gray-500 text-sm uppercase tracking-wide mb-1">{{ 'CHECKOUT.TICKET_CODE_LABEL' | translate }}</p>
             <p class="text-5xl font-bold text-sky-500 tracking-widest">{{ createdOrder()?.walkInTicket?.ticketCode }}</p>
           </div>
 
           <div class="space-y-4 text-left">
             <div class="flex justify-between">
-              <span class="text-gray-600">Laboratorio:</span>
+              <span class="text-gray-600">{{ 'CHECKOUT.LABORATORY' | translate }}:</span>
               <span class="font-medium text-gray-900">{{ createdOrder()?.pos?.name }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600">Dirección:</span>
+              <span class="text-gray-600">{{ 'CHECKOUT.ADDRESS' | translate }}:</span>
               <span class="font-medium text-gray-900 text-right">{{ createdOrder()?.pos?.address }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600">Total:</span>
+              <span class="text-gray-600">{{ 'CHECKOUT.TOTAL' | translate }}:</span>
               <span class="font-bold text-sky-500">${{ createdOrder()?.totalAmount | number }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600">Válido hasta:</span>
+              <span class="text-gray-600">{{ 'CHECKOUT.TICKET_EXPIRES' | translate }}:</span>
               <span class="font-medium text-gray-900">{{ formatDate(createdOrder()?.walkInTicket?.expiresAt || '') }}</span>
             </div>
           </div>
@@ -64,7 +64,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4h2v-4zM6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
-            <p class="mt-3 text-sm text-gray-500">Presenta este código en el laboratorio</p>
+            <p class="mt-3 text-sm text-gray-500">{{ 'CHECKOUT.TICKET_INSTRUCTION' | translate }}</p>
           </div>
         </div>
 
@@ -73,13 +73,13 @@
             routerLink="/orders"
             class="px-6 py-3 bg-sky-500 text-white rounded-xl font-bold hover:bg-sky-600 transition"
           >
-            Ver mis órdenes
+            {{ 'CHECKOUT.VIEW_ORDERS' | translate }}
           </a>
           <a
             routerLink="/"
             class="px-6 py-3 border-2 border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition"
           >
-            Volver al inicio
+            {{ 'CHECKOUT.BACK_HOME' | translate }}
           </a>
         </div>
       </div>
@@ -87,7 +87,7 @@
 
     <!-- Checkout Form -->
     @if (cartItems().length > 0 && !orderComplete()) {
-      <h1 class="text-3xl font-bold text-gray-900 mb-8">Finalizar compra</h1>
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">{{ 'CHECKOUT.TITLE' | translate }}</h1>
 
       <!-- Error -->
       @if (error()) {
@@ -101,7 +101,7 @@
         <div class="space-y-6">
           <!-- Cart Summary -->
           <div class="bg-white rounded-2xl shadow-sm p-6">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">Resumen del carrito</h2>
+            <h2 class="text-xl font-bold text-gray-900 mb-4">{{ 'CHECKOUT.CART_SUMMARY' | translate }}</h2>
 
             <div class="flex items-center gap-2 mb-4 text-sm text-gray-600">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,7 +116,7 @@
                 <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                   <div class="flex-1">
                     <h3 class="font-medium text-gray-900">{{ item.service.name }}</h3>
-                    <p class="text-sm text-gray-500">${{ item.service.basePrice | number }} c/u</p>
+                    <p class="text-sm text-gray-500">${{ item.service.basePrice | number }} {{ 'CHECKOUT.UNIT_PRICE' | translate }}</p>
                   </div>
                   <div class="flex items-center gap-3">
                     <button
@@ -147,7 +147,7 @@
 
             <div class="mt-6 pt-4 border-t border-gray-200">
               <div class="flex items-center justify-between text-xl font-bold">
-                <span>Total</span>
+                <span>{{ 'CHECKOUT.TOTAL' | translate }}</span>
                 <span class="text-sky-500">${{ getTotal() | number }}</span>
               </div>
             </div>
@@ -156,29 +156,29 @@
           <!-- Guest Checkout Form -->
           @if (!isLoggedIn()) {
             <div class="bg-white rounded-2xl shadow-sm p-6">
-              <h2 class="text-xl font-bold text-gray-900 mb-4">Datos de contacto</h2>
-              <p class="text-gray-600 mb-4 text-sm">Ingresa tus datos para recibir confirmación de tu orden</p>
+              <h2 class="text-xl font-bold text-gray-900 mb-4">{{ 'CHECKOUT.GUEST_TITLE' | translate }}</h2>
+              <p class="text-gray-600 mb-4 text-sm">{{ 'CHECKOUT.GUEST_DESC' | translate }}</p>
 
               <form [formGroup]="guestForm" class="space-y-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Correo electrónico</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">{{ 'CHECKOUT.GUEST_EMAIL' | translate }}</label>
                   <input
                     type="email"
                     formControlName="email"
                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                     [class.border-red-300]="guestForm.get('email')?.invalid && guestForm.get('email')?.touched"
-                    placeholder="tu@email.com"
+                    [placeholder]="'AUTH.EMAIL_PLACEHOLDER' | translate"
                   />
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Cédula</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">{{ 'CHECKOUT.GUEST_CEDULA' | translate }}</label>
                   <input
                     type="text"
                     formControlName="cedula"
                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                     [class.border-red-300]="guestForm.get('cedula')?.invalid && guestForm.get('cedula')?.touched"
-                    placeholder="1234567890"
+                    [placeholder]="'AUTH.CEDULA_PLACEHOLDER' | translate"
                   />
                 </div>
               </form>
@@ -190,7 +190,7 @@
         <div class="space-y-6">
           <!-- Payment Info -->
           <div class="bg-white rounded-2xl shadow-sm p-6">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">Método de pago</h2>
+            <h2 class="text-xl font-bold text-gray-900 mb-4">{{ 'CHECKOUT.PAYMENT_METHOD' | translate }}</h2>
 
             <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
               <div class="flex items-start gap-3">
@@ -200,9 +200,9 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="font-bold text-emerald-800">Pago en el laboratorio</h3>
+                  <h3 class="font-bold text-emerald-800">{{ 'CHECKOUT.PAY_AT_LAB' | translate }}</h3>
                   <p class="text-emerald-700 text-sm mt-1">
-                    No necesitas pagar ahora. Presenta tu código en el laboratorio seleccionado y realiza el pago allí.
+                    {{ 'CHECKOUT.PAYMENT_DESC' | translate }}
                   </p>
                 </div>
               </div>
@@ -218,18 +218,18 @@
             >
               @if (loading()) {
                 <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Creando orden...
+                {{ 'CHECKOUT.CREATING_ORDER' | translate }}
               } @else {
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Confirmar orden - Pagar en laboratorio
+                {{ 'CHECKOUT.CONFIRM_ORDER' | translate }}
               }
             </button>
 
             <p class="mt-4 text-center text-sm text-gray-500">
-              Al confirmar, aceptas nuestros
-              <a href="#" class="text-sky-500 hover:text-sky-600">términos y condiciones</a>
+              {{ 'CHECKOUT.TERMS' | translate }}
+              <a href="#" class="text-sky-500 hover:text-sky-600">{{ 'CHECKOUT.TERMS_LINK' | translate }}</a>
             </p>
           </div>
         </div>

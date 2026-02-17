@@ -4,23 +4,23 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-3xl mx-auto">
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-          Tu salud, a un clic
+          {{ 'HOME.HERO_TITLE' | translate }}
         </h1>
         <p class="text-xl sm:text-2xl mb-8 text-sky-100">
-          Encuentra y agenda exámenes de laboratorio en los mejores centros de Colombia
+          {{ 'HOME.HERO_SUBTITLE' | translate }}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a
             routerLink="/search"
             class="px-8 py-4 bg-white text-sky-600 rounded-xl font-bold text-lg hover:bg-gray-100 transition shadow-lg"
           >
-            Buscar Exámenes
+            {{ 'HOME.SEARCH_CTA' | translate }}
           </a>
           <a
             routerLink="/auth/register"
             class="px-8 py-4 bg-emerald-500 text-white rounded-xl font-bold text-lg hover:bg-emerald-600 transition shadow-lg"
           >
-            Crear Cuenta
+            {{ 'HOME.CREATE_ACCOUNT' | translate }}
           </a>
         </div>
       </div>
@@ -50,8 +50,8 @@
   <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Exámenes Destacados</h2>
-        <p class="text-xl text-gray-600">Los servicios más solicitados por nuestros pacientes</p>
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ 'HOME.FEATURED_TITLE' | translate }}</h2>
+        <p class="text-xl text-gray-600">{{ 'HOME.HOW_IT_WORKS_SUBTITLE' | translate }}</p>
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -67,7 +67,7 @@
                   [queryParams]="{ q: service.code }"
                   class="px-4 py-2 bg-sky-500 text-white rounded-lg text-sm font-medium hover:bg-sky-600 transition"
                 >
-                  Ver más
+                  {{ 'HOME.VIEW_MORE' | translate }}
                 </a>
               </div>
             </div>
@@ -80,7 +80,7 @@
           routerLink="/search"
           class="inline-flex items-center gap-2 px-6 py-3 border-2 border-sky-500 text-sky-500 rounded-xl font-bold hover:bg-sky-50 transition"
         >
-          Ver todos los exámenes
+          {{ 'HOME.VIEW_ALL_EXAMS' | translate }}
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
@@ -93,25 +93,25 @@
   <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo funciona?</h2>
-        <p class="text-xl text-gray-600">Tres simples pasos para cuidar tu salud</p>
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ 'HOME.HOW_IT_WORKS_TITLE' | translate }}</h2>
+        <p class="text-xl text-gray-600">{{ 'HOME.HOW_IT_WORKS_SUBTITLE' | translate }}</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-8">
         <div class="text-center">
           <div class="w-20 h-20 mx-auto mb-4 bg-sky-500 text-white rounded-full flex items-center justify-center text-3xl font-bold">1</div>
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Busca tu examen</h3>
-          <p class="text-gray-600">Encuentra entre cientos de exámenes de laboratorio disponibles</p>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">{{ 'HOME.STEP1_TITLE' | translate }}</h3>
+          <p class="text-gray-600">{{ 'HOME.STEP1_DESC' | translate }}</p>
         </div>
         <div class="text-center">
           <div class="w-20 h-20 mx-auto mb-4 bg-sky-500 text-white rounded-full flex items-center justify-center text-3xl font-bold">2</div>
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Selecciona laboratorio</h3>
-          <p class="text-gray-600">Elige el punto de servicio más cercano a tu ubicación</p>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">{{ 'HOME.STEP2_TITLE' | translate }}</h3>
+          <p class="text-gray-600">{{ 'HOME.STEP2_DESC' | translate }}</p>
         </div>
         <div class="text-center">
           <div class="w-20 h-20 mx-auto mb-4 bg-emerald-500 text-white rounded-full flex items-center justify-center text-3xl font-bold">3</div>
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Acude y paga</h3>
-          <p class="text-gray-600">Presenta tu código y paga directamente en el laboratorio</p>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">{{ 'HOME.STEP3_TITLE' | translate }}</h3>
+          <p class="text-gray-600">{{ 'HOME.STEP3_DESC' | translate }}</p>
         </div>
       </div>
     </div>

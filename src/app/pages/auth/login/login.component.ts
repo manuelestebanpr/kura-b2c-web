@@ -2,13 +2,14 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
@@ -41,7 +42,12 @@ export class LoginComponent {
 
     this.apiService.login(email, password).subscribe({
       next: (response) => {
-        this.authService.setAuth(response.token, response.user);
+        this.authService.setAuth({
+          userId: response.user.id,
+          email: response.user.email,
+          fullName: response.user.fullName,
+          role: 'USER'
+        });
         this.loading.set(false);
         this.router.navigate(['/']);
       },

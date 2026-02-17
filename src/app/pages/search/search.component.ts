@@ -4,6 +4,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { TranslateModule } from '@ngx-translate/core';
 import { ApiService } from '../../services/api.service';
 import { CartService } from '../../services/cart.service';
 import { SearchResponse, PosResponse } from '../../models/api.models';
@@ -11,7 +12,7 @@ import { SearchResponse, PosResponse } from '../../models/api.models';
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, TranslateModule],
   templateUrl: './search.component.html',
 })
 export class SearchComponent implements OnInit {
@@ -38,7 +39,7 @@ export class SearchComponent implements OnInit {
     // Load PoS locations
     this.apiService.getPosLocations().subscribe({
       next: (pos) => this.posLocations.set(pos.filter(p => p.isActive)),
-      error: () => this.error.set('No se pudieron cargar los laboratorios'),
+      error: () => this.error.set('COMMON.ERROR'),
     });
 
     // Setup search debounce
@@ -76,7 +77,7 @@ export class SearchComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Error al buscar exámenes. Intenta de nuevo.');
+        this.error.set('COMMON.ERROR');
         this.loading.set(false);
       },
     });
@@ -103,7 +104,8 @@ export class SearchComponent implements OnInit {
   addToCart(service: SearchResponse): void {
     const posId = this.selectedPos();
     if (!posId) {
-      this.error.set('Por favor selecciona un laboratorio primero');
+      // Error message will be shown in template using translate pipe
+      this.error.set('SEARCH.SELECT_LAB_FIRST');
       return;
     }
 

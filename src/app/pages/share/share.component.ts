@@ -1,13 +1,14 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ApiService } from '../../services/api.service';
 import { ShareResponse } from '../../models/api.models';
 
 @Component({
   selector: 'app-share',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './share.component.html',
 })
 export class ShareComponent implements OnInit {

@@ -41,16 +41,16 @@
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">
           @switch (currentStep()) {
-            @case ('email') { Crear cuenta }
-            @case ('otp') { Verificar email }
-            @case ('form') { Completar registro }
+            @case ('email') { {{ 'AUTH.REGISTER_TITLE' | translate }} }
+            @case ('otp') { {{ 'AUTH.STEP_OTP' | translate }} }
+            @case ('form') { {{ 'AUTH.STEP_FORM' | translate }} }
           }
         </h1>
         <p class="text-gray-600">
           @switch (currentStep()) {
-            @case ('email') { Ingresa tu correo para comenzar }
-            @case ('otp') { Ingresa el código de 6 dígitos enviado a {{ email() }} }
-            @case ('form') { Completa tus datos personales }
+            @case ('email') { {{ 'AUTH.STEP_EMAIL' | translate }} }
+            @case ('otp') { {{ email() }} }
+            @case ('form') { {{ 'AUTH.STEP_FORM' | translate }} }
           }
         </p>
       </div>
@@ -67,7 +67,7 @@
         <form [formGroup]="emailForm" (ngSubmit)="sendOtp()" class="space-y-6">
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-              Correo electrónico
+              {{ 'AUTH.EMAIL' | translate }}
             </label>
             <input
               id="email"
@@ -75,10 +75,10 @@
               formControlName="email"
               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
               [class.border-red-300]="emailForm.get('email')?.invalid && emailForm.get('email')?.touched"
-              placeholder="tu@email.com"
+              [placeholder]="'AUTH.EMAIL_PLACEHOLDER' | translate"
             />
             @if (emailForm.get('email')?.invalid && emailForm.get('email')?.touched) {
-              <p class="mt-1 text-sm text-red-600">Ingresa un correo válido</p>
+              <p class="mt-1 text-sm text-red-600">{{ 'AUTH.EMAIL_ERROR' | translate }}</p>
             }
           </div>
 
@@ -89,9 +89,9 @@
           >
             @if (loading()) {
               <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              Enviando...
+              {{ 'AUTH.SENDING' | translate }}
             } @else {
-              Enviar código
+              {{ 'AUTH.SEND_OTP' | translate }}
             }
           </button>
         </form>
@@ -102,7 +102,7 @@
         <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()" class="space-y-6">
           <div>
             <label for="code" class="block text-sm font-medium text-gray-700 mb-2">
-              Código de verificación
+              {{ 'AUTH.OTP_LABEL' | translate }}
             </label>
             <input
               id="code"
@@ -113,10 +113,10 @@
               pattern="[0-9]*"
               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-center text-2xl tracking-widest"
               [class.border-red-300]="otpForm.get('code')?.invalid && otpForm.get('code')?.touched"
-              placeholder="000000"
+              [placeholder]="'AUTH.OTP_PLACEHOLDER' | translate"
             />
             @if (otpForm.get('code')?.invalid && otpForm.get('code')?.touched) {
-              <p class="mt-1 text-sm text-red-600 text-center">Ingresa el código de 6 dígitos</p>
+              <p class="mt-1 text-sm text-red-600 text-center">{{ 'AUTH.OTP_HINT' | translate }}</p>
             }
           </div>
 
@@ -126,7 +126,7 @@
               (click)="goBack()"
               class="flex-1 py-4 border-2 border-gray-200 text-gray-700 rounded-xl font-bold text-lg hover:bg-gray-50 transition"
             >
-              Atrás
+              {{ 'AUTH.BACK' | translate }}
             </button>
             <button
               type="submit"
@@ -135,9 +135,9 @@
             >
               @if (loading()) {
                 <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Verificando...
+                {{ 'AUTH.VERIFYING' | translate }}
               } @else {
-                Verificar
+                {{ 'AUTH.VERIFY_OTP' | translate }}
               }
             </button>
           </div>
@@ -148,7 +148,7 @@
             [disabled]="loading()"
             class="w-full text-sky-500 hover:text-sky-600 font-medium"
           >
-            Reenviar código
+            {{ 'AUTH.RESEND_CODE' | translate }}
           </button>
         </form>
       }
@@ -158,7 +158,7 @@
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
           <div>
             <label for="cedula" class="block text-sm font-medium text-gray-700 mb-2">
-              Cédula
+              {{ 'AUTH.CEDULA' | translate }}
             </label>
             <input
               id="cedula"
@@ -166,16 +166,16 @@
               formControlName="cedula"
               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
               [class.border-red-300]="registerForm.get('cedula')?.invalid && registerForm.get('cedula')?.touched"
-              placeholder="1234567890"
+              [placeholder]="'AUTH.CEDULA_PLACEHOLDER' | translate"
             />
             @if (registerForm.get('cedula')?.invalid && registerForm.get('cedula')?.touched) {
-              <p class="mt-1 text-sm text-red-600">Ingresa una cédula válida (6-10 dígitos)</p>
+              <p class="mt-1 text-sm text-red-600">{{ 'AUTH.CEDULA_ERROR' | translate }}</p>
             }
           </div>
 
           <div>
             <label for="fullName" class="block text-sm font-medium text-gray-700 mb-2">
-              Nombre completo
+              {{ 'AUTH.FULL_NAME' | translate }}
             </label>
             <input
               id="fullName"
@@ -183,16 +183,16 @@
               formControlName="fullName"
               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
               [class.border-red-300]="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
-              placeholder="Juan Pérez"
+              [placeholder]="'AUTH.FULL_NAME_PLACEHOLDER' | translate"
             />
             @if (registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched) {
-              <p class="mt-1 text-sm text-red-600">Ingresa tu nombre completo</p>
+              <p class="mt-1 text-sm text-red-600">{{ 'AUTH.FULL_NAME_ERROR' | translate }}</p>
             }
           </div>
 
           <div>
             <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-              Contraseña
+              {{ 'AUTH.PASSWORD' | translate }}
             </label>
             <input
               id="password"
@@ -200,16 +200,16 @@
               formControlName="password"
               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
               [class.border-red-300]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-              placeholder="••••••••"
+              [placeholder]="'AUTH.PASSWORD_PLACEHOLDER' | translate"
             />
             @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
-              <p class="mt-1 text-sm text-red-600">Mínimo 6 caracteres</p>
+              <p class="mt-1 text-sm text-red-600">{{ 'AUTH.PASSWORD_MIN_ERROR' | translate }}</p>
             }
           </div>
 
           <div>
             <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-              Teléfono (opcional)
+              {{ 'AUTH.PHONE' | translate }}
             </label>
             <input
               id="phone"
@@ -217,7 +217,7 @@
               formControlName="phone"
               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
               [class.border-red-300]="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched"
-              placeholder="3001234567"
+              [placeholder]="'AUTH.PHONE_PLACEHOLDER' | translate"
             />
           </div>
 
@@ -229,9 +229,8 @@
               class="w-5 h-5 mt-0.5 text-sky-500 rounded focus:ring-sky-500"
             />
             <label for="acceptTerms" class="text-sm text-gray-600">
-              Acepto el tratamiento de mis datos personales conforme a la
-              <a href="#" class="text-sky-500 hover:text-sky-600">Ley 1581 de 2012</a>
-              de protección de datos de Colombia.
+              {{ 'AUTH.CONSENT_LEY1581' | translate }}
+              <a href="#" class="text-sky-500 hover:text-sky-600">{{ 'AUTH.LAW_1581' | translate }}</a>.
             </label>
           </div>
 
@@ -241,7 +240,7 @@
               (click)="goBack()"
               class="flex-1 py-4 border-2 border-gray-200 text-gray-700 rounded-xl font-bold text-lg hover:bg-gray-50 transition"
             >
-              Atrás
+              {{ 'AUTH.BACK' | translate }}
             </button>
             <button
               type="submit"
@@ -250,9 +249,9 @@
             >
               @if (loading()) {
                 <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Creando...
+                {{ 'AUTH.REGISTERING' | translate }}
               } @else {
-                Crear cuenta
+                {{ 'AUTH.REGISTER_BTN' | translate }}
               }
             </button>
           </div>
@@ -261,9 +260,9 @@
 
       <!-- Login Link -->
       <div class="mt-6 text-center">
-        <span class="text-gray-600">¿Ya tienes cuenta?</span>
+        <span class="text-gray-600">{{ 'AUTH.HAS_ACCOUNT' | translate }}</span>
         <a routerLink="/auth/login" class="ml-1 text-sky-500 hover:text-sky-600 font-medium">
-          Ingresar
+          {{ 'AUTH.LOGIN_LINK' | translate }}
         </a>
       </div>
     </div>
@@ -271,7 +270,7 @@
     <!-- Back Link -->
     <div class="text-center mt-6">
       <a routerLink="/" class="text-gray-500 hover:text-gray-600 font-medium">
-        ← Volver al inicio
+        {{ 'AUTH.BACK_HOME' | translate }}
       </a>
     </div>
   </div>

@@ -2,8 +2,8 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Header -->
     <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 mb-2">Buscar Exámenes</h1>
-      <p class="text-gray-600">Encuentra el examen que necesitas entre nuestros servicios</p>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ 'SEARCH.TITLE' | translate }}</h1>
+      <p class="text-gray-600">{{ 'SEARCH.SUBTITLE' | translate }}</p>
     </div>
 
     <!-- Search Section -->
@@ -15,7 +15,7 @@
             type="text"
             [(ngModel)]="searchQuery"
             (input)="onSearchInput()"
-            placeholder="Escribe el nombre del examen..."
+            [placeholder]="'SEARCH.PLACEHOLDER' | translate"
             class="w-full px-4 py-4 pl-12 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-lg"
           />
           <svg
@@ -40,7 +40,7 @@
             (change)="performSearch(searchQuery)"
             class="w-full px-4 py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-lg"
           >
-            <option value="">Seleccionar laboratorio...</option>
+            <option value="">{{ 'SEARCH.SELECT_LAB' | translate }}</option>
             @for (pos of posLocations(); track pos.id) {
               <option [value]="pos.id">{{ pos.name }}</option>
             }
@@ -63,7 +63,7 @@
       <!-- Error -->
       @if (error()) {
         <div class="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800">
-          {{ error() }}
+          {{ error() | translate }}
         </div>
       }
     </div>
@@ -73,20 +73,20 @@
       <div class="bg-white rounded-2xl shadow-sm p-6 mb-8">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-xl font-bold text-gray-900">
-            Comparando {{ selectedForCompare().length }} paquete(s)
+            {{ 'SEARCH.COMPARE' | translate }} {{ selectedForCompare().length }}
           </h2>
           <div class="flex gap-2">
             <button
               (click)="showComparison.set(!showComparison())"
               class="px-4 py-2 bg-sky-500 text-white rounded-lg font-medium hover:bg-sky-600 transition"
             >
-              {{ showComparison() ? 'Ocultar' : 'Ver comparación' }}
+              {{ showComparison() ? ('SEARCH.COMPARE_HIDE' | translate) : ('SEARCH.COMPARE_BTN' | translate) }}
             </button>
             <button
               (click)="selectedForCompare.set([])"
               class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition"
             >
-              Limpiar
+              {{ 'SEARCH.COMPARE_CLEAR' | translate }}
             </button>
           </div>
         </div>
@@ -96,7 +96,7 @@
             <table class="w-full">
               <thead>
                 <tr class="border-b border-gray-200">
-                  <th class="text-left py-3 px-4 font-semibold text-gray-700">Examen incluido</th>
+                  <th class="text-left py-3 px-4 font-semibold text-gray-700">{{ 'SEARCH.INCLUDED_TEST' | translate }}</th>
                   @for (bundle of getSelectedBundles(); track bundle.code) {
                     <th class="text-center py-3 px-4 font-semibold text-sky-600">{{ bundle.name }}</th>
                   }
@@ -120,7 +120,7 @@
                   </tr>
                 }
                 <tr class="bg-gray-50 font-semibold">
-                  <td class="py-3 px-4 text-gray-700">Precio</td>
+                  <td class="py-3 px-4 text-gray-700">{{ 'SEARCH.PRICE' | translate }}</td>
                   @for (bundle of getSelectedBundles(); track bundle.code) {
                     <td class="text-center py-3 px-4 text-sky-600">
                       ${{ bundle.basePrice | number }}
@@ -138,7 +138,7 @@
     @if (loading()) {
       <div class="text-center py-12">
         <div class="inline-block w-8 h-8 border-4 border-sky-200 border-t-sky-500 rounded-full animate-spin"></div>
-        <p class="mt-4 text-gray-600">Buscando exámenes...</p>
+        <p class="mt-4 text-gray-600">{{ 'SEARCH.LOADING' | translate }}</p>
       </div>
     }
 
@@ -155,7 +155,7 @@
                     ? 'px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-semibold'
                     : 'px-3 py-1 bg-sky-100 text-sky-700 rounded-full text-xs font-semibold'"
                 >
-                  {{ service.type === 'BUNDLE' ? 'PAQUETE' : 'EXAMEN' }}
+                  {{ service.type === 'BUNDLE' ? ('SEARCH.TYPE_BUNDLE' | translate) : ('SEARCH.TYPE_SINGLE' | translate) }}
                 </span>
                 @if (service.type === 'BUNDLE') {
                   <input
@@ -169,7 +169,7 @@
 
               <h3 class="text-xl font-bold text-gray-900 mb-2">{{ service.name }}</h3>
               <p class="text-sm text-gray-500 mb-3">{{ service.categoryName }}</p>
-              <p class="text-gray-600 text-sm mb-4">{{ service.description || 'Sin descripción disponible' }}</p>
+              <p class="text-gray-600 text-sm mb-4">{{ service.description || ('SEARCH.NO_DESCRIPTION' | translate) }}</p>
 
               <div class="flex items-center justify-between">
                 <span class="text-2xl font-bold text-sky-500">${{ service.basePrice | number }}</span>
@@ -177,7 +177,7 @@
                   (click)="toggleExpand(service.code)"
                   class="text-sky-500 hover:text-sky-600 font-medium text-sm flex items-center gap-1"
                 >
-                  {{ expandedService() === service.code ? 'Ver menos' : 'Ver más' }}
+                  {{ expandedService() === service.code ? ('SEARCH.VIEW_LESS' | translate) : ('SEARCH.VIEW_MORE' | translate) }}
                   <svg
                     class="w-4 h-4 transition-transform"
                     [class.rotate-180]="expandedService() === service.code"
@@ -196,7 +196,7 @@
               <div class="px-6 pb-6 border-t border-gray-100 pt-4">
                 @if (service.type === 'BUNDLE' && service.items && service.items.length > 0) {
                   <div class="mb-4">
-                    <h4 class="font-semibold text-gray-900 mb-2">Este paquete incluye:</h4>
+                    <h4 class="font-semibold text-gray-900 mb-2">{{ 'SEARCH.BUNDLE_INCLUDES' | translate }}</h4>
                     <ul class="space-y-1">
                       @for (item of service.items; track item.code) {
                         <li class="flex items-center gap-2 text-sm text-gray-600">
@@ -215,7 +215,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
-                    Requiere ayuno de 8-12 horas
+                    {{ 'SEARCH.REQUIRES_FASTING' | translate }}
                   </div>
                 }
 
@@ -223,7 +223,7 @@
                   (click)="addToCart(service)"
                   class="w-full py-3 bg-sky-500 text-white rounded-xl font-bold hover:bg-sky-600 transition"
                 >
-                  Agregar al carrito
+                  {{ 'SEARCH.ADD_TO_CART' | translate }}
                 </button>
               </div>
             }
@@ -240,8 +240,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
-        <h3 class="text-xl font-semibold text-gray-900 mb-2">No encontramos resultados</h3>
-        <p class="text-gray-600">Intenta con otros términos o revisa la ortografía</p>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ 'SEARCH.NO_RESULTS' | translate }}</h3>
+        <p class="text-gray-600">{{ 'SEARCH.NO_RESULTS_HINT' | translate }}</p>
       </div>
     }
 
@@ -253,8 +253,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
-        <h3 class="text-xl font-semibold text-gray-900 mb-2">¿Qué examen necesitas?</h3>
-        <p class="text-gray-600">Escribe el nombre del examen en la barra de búsqueda</p>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ 'SEARCH.EMPTY_TITLE' | translate }}</h3>
+        <p class="text-gray-600">{{ 'SEARCH.EMPTY_HINT' | translate }}</p>
       </div>
     }
   </div>

@@ -1,14 +1,15 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { AuthService, AuthUser } from '../../services/auth.service';
 import { ApiService } from '../../services/api.service';
-import { OrderResponse, User } from '../../models/api.models';
+import { OrderResponse } from '../../models/api.models';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './orders.component.html',
 })
 export class OrdersComponent implements OnInit {
@@ -16,7 +17,7 @@ export class OrdersComponent implements OnInit {
   loading = signal(true);
   error = signal<string | null>(null);
   expandedOrder = signal<string | null>(null);
-  currentUser = signal<User | null>(null);
+  currentUser = signal<AuthUser | null>(null);
 
   constructor(
     private authService: AuthService,
@@ -32,7 +33,7 @@ export class OrdersComponent implements OnInit {
     }
 
     this.currentUser.set(user);
-    this.loadOrders(user.id);
+    this.loadOrders(user.userId);
   }
 
   loadOrders(userId: string): void {

@@ -1,0 +1,23 @@
+<!-- KURA B2C Patient Portal -->
+<nav class="bg-white shadow-sm border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
+      <a routerLink="/" class="text-2xl font-bold text-sky-600">KURA</a>
+      <div class="flex items-center gap-6">
+        <a routerLink="/search" class="text-gray-600 hover:text-sky-600 transition">Buscar Exámenes</a>
+        <a routerLink="/orders" class="text-gray-600 hover:text-sky-600 transition">Mis Órdenes</a>
+        <a routerLink="/auth/login" class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition">Ingresar</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <router-outlet />
+</main>
+
+<footer class="bg-gray-50 border-t border-gray-100 mt-auto py-8">
+  <div class="max-w-7xl mx-auto px-4 text-center text-gray-400 text-sm">
+    &copy; 2026 KURA — Tu salud, nuestra prioridad
+  </div>
+</footer>

@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+/* KURA Design Language */
+:root {
+  --kura-blue: #0ea5e9;
+  --kura-blue-dark: #0284c7;
+  --kura-green: #10b981;
+  --kura-green-dark: #059669;
+  --kura-white: #ffffff;
+  --kura-gray-50: #f9fafb;
+  --kura-gray-100: #f3f4f6;
+  --kura-gray-900: #111827;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--kura-gray-50);
+  color: var(--kura-gray-900);
+}
+
+/* Large typography for older adults */
+html {
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}

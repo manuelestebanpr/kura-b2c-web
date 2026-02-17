@@ -1,4 +1,119 @@
-<div class="min-h-screen p-6">
-  <h1 class="text-3xl font-bold text-sky-600">home</h1>
-  <p class="mt-2 text-gray-600">Coming soon...</p>
+<div class="min-h-screen">
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-sky-500 to-sky-600 text-white py-20 lg:py-32">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          Tu salud, a un clic
+        </h1>
+        <p class="text-xl sm:text-2xl mb-8 text-sky-100">
+          Encuentra y agenda exámenes de laboratorio en los mejores centros de Colombia
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            routerLink="/search"
+            class="px-8 py-4 bg-white text-sky-600 rounded-xl font-bold text-lg hover:bg-gray-100 transition shadow-lg"
+          >
+            Buscar Exámenes
+          </a>
+          <a
+            routerLink="/auth/register"
+            class="px-8 py-4 bg-emerald-500 text-white rounded-xl font-bold text-lg hover:bg-emerald-600 transition shadow-lg"
+          >
+            Crear Cuenta
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Indicators -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-3 gap-8">
+        @for (indicator of trustIndicators; track indicator.title) {
+          <div class="text-center p-6">
+            <div class="w-16 h-16 mx-auto mb-4 bg-sky-100 rounded-full flex items-center justify-center">
+              <svg class="w-8 h-8 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="indicator.icon" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ indicator.title }}</h3>
+            <p class="text-gray-600">{{ indicator.description }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Services -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Exámenes Destacados</h2>
+        <p class="text-xl text-gray-600">Los servicios más solicitados por nuestros pacientes</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        @for (service of featuredServices; track service.code) {
+          <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition">
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2">{{ service.name }}</h3>
+              <p class="text-gray-600 mb-4 text-sm">{{ service.description }}</p>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-sky-500">${{ service.price | number }}</span>
+                <a
+                  [routerLink]="['/search']"
+                  [queryParams]="{ q: service.code }"
+                  class="px-4 py-2 bg-sky-500 text-white rounded-lg text-sm font-medium hover:bg-sky-600 transition"
+                >
+                  Ver más
+                </a>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="text-center mt-10">
+        <a
+          routerLink="/search"
+          class="inline-flex items-center gap-2 px-6 py-3 border-2 border-sky-500 text-sky-500 rounded-xl font-bold hover:bg-sky-50 transition"
+        >
+          Ver todos los exámenes
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it Works -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo funciona?</h2>
+        <p class="text-xl text-gray-600">Tres simples pasos para cuidar tu salud</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="w-20 h-20 mx-auto mb-4 bg-sky-500 text-white rounded-full flex items-center justify-center text-3xl font-bold">1</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Busca tu examen</h3>
+          <p class="text-gray-600">Encuentra entre cientos de exámenes de laboratorio disponibles</p>
+        </div>
+        <div class="text-center">
+          <div class="w-20 h-20 mx-auto mb-4 bg-sky-500 text-white rounded-full flex items-center justify-center text-3xl font-bold">2</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Selecciona laboratorio</h3>
+          <p class="text-gray-600">Elige el punto de servicio más cercano a tu ubicación</p>
+        </div>
+        <div class="text-center">
+          <div class="w-20 h-20 mx-auto mb-4 bg-emerald-500 text-white rounded-full flex items-center justify-center text-3xl font-bold">3</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Acude y paga</h3>
+          <p class="text-gray-600">Presenta tu código y paga directamente en el laboratorio</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>

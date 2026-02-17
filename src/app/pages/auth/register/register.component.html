@@ -1,6 +1,278 @@
-<div class="min-h-screen flex items-center justify-center">
-  <div class="bg-white p-8 rounded-xl shadow-lg max-w-md w-full">
-    <h1 class="text-2xl font-bold text-sky-600 text-center mb-6">Register</h1>
-    <p class="text-gray-500 text-center">Form coming soon...</p>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full">
+    <!-- Card -->
+    <div class="bg-white rounded-2xl shadow-lg p-8">
+      <!-- Progress Steps -->
+      <div class="flex items-center justify-center mb-8">
+        <div class="flex items-center gap-2">
+          <div
+            [class]="currentStep() === 'email'
+              ? 'w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold'
+              : 'w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold'"
+          >
+            1
+          </div>
+          <div
+            [class]="currentStep() === 'email' ? 'w-8 h-0.5 bg-gray-200' : 'w-8 h-0.5 bg-sky-500'"
+          ></div>
+          <div
+            [class]="currentStep() === 'otp'
+              ? 'w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold'
+              : currentStep() === 'form'
+                ? 'w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold'
+                : 'w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold'"
+          >
+            2
+          </div>
+          <div
+            [class]="currentStep() === 'form' ? 'w-8 h-0.5 bg-sky-500' : 'w-8 h-0.5 bg-gray-200'"
+          ></div>
+          <div
+            [class]="currentStep() === 'form'
+              ? 'w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold'
+              : 'w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold'"
+          >
+            3
+          </div>
+        </div>
+      </div>
+
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">
+          @switch (currentStep()) {
+            @case ('email') { Crear cuenta }
+            @case ('otp') { Verificar email }
+            @case ('form') { Completar registro }
+          }
+        </h1>
+        <p class="text-gray-600">
+          @switch (currentStep()) {
+            @case ('email') { Ingresa tu correo para comenzar }
+            @case ('otp') { Ingresa el código de 6 dígitos enviado a {{ email() }} }
+            @case ('form') { Completa tus datos personales }
+          }
+        </p>
+      </div>
+
+      <!-- Error -->
+      @if (error()) {
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800">
+          {{ error() }}
+        </div>
+      }
+
+      <!-- Step 1: Email -->
+      @if (currentStep() === 'email') {
+        <form [formGroup]="emailForm" (ngSubmit)="sendOtp()" class="space-y-6">
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+              Correo electrónico
+            </label>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+              [class.border-red-300]="emailForm.get('email')?.invalid && emailForm.get('email')?.touched"
+              placeholder="tu@email.com"
+            />
+            @if (emailForm.get('email')?.invalid && emailForm.get('email')?.touched) {
+              <p class="mt-1 text-sm text-red-600">Ingresa un correo válido</p>
+            }
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="loading()"
+            class="w-full py-4 bg-sky-500 text-white rounded-xl font-bold text-lg hover:bg-sky-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            @if (loading()) {
+              <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              Enviando...
+            } @else {
+              Enviar código
+            }
+          </button>
+        </form>
+      }
+
+      <!-- Step 2: OTP -->
+      @if (currentStep() === 'otp') {
+        <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()" class="space-y-6">
+          <div>
+            <label for="code" class="block text-sm font-medium text-gray-700 mb-2">
+              Código de verificación
+            </label>
+            <input
+              id="code"
+              type="text"
+              formControlName="code"
+              maxlength="6"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-center text-2xl tracking-widest"
+              [class.border-red-300]="otpForm.get('code')?.invalid && otpForm.get('code')?.touched"
+              placeholder="000000"
+            />
+            @if (otpForm.get('code')?.invalid && otpForm.get('code')?.touched) {
+              <p class="mt-1 text-sm text-red-600 text-center">Ingresa el código de 6 dígitos</p>
+            }
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              type="button"
+              (click)="goBack()"
+              class="flex-1 py-4 border-2 border-gray-200 text-gray-700 rounded-xl font-bold text-lg hover:bg-gray-50 transition"
+            >
+              Atrás
+            </button>
+            <button
+              type="submit"
+              [disabled]="loading()"
+              class="flex-1 py-4 bg-sky-500 text-white rounded-xl font-bold text-lg hover:bg-sky-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              @if (loading()) {
+                <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Verificando...
+              } @else {
+                Verificar
+              }
+            </button>
+          </div>
+
+          <button
+            type="button"
+            (click)="sendOtp()"
+            [disabled]="loading()"
+            class="w-full text-sky-500 hover:text-sky-600 font-medium"
+          >
+            Reenviar código
+          </button>
+        </form>
+      }
+
+      <!-- Step 3: Full Form -->
+      @if (currentStep() === 'form') {
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
+          <div>
+            <label for="cedula" class="block text-sm font-medium text-gray-700 mb-2">
+              Cédula
+            </label>
+            <input
+              id="cedula"
+              type="text"
+              formControlName="cedula"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+              [class.border-red-300]="registerForm.get('cedula')?.invalid && registerForm.get('cedula')?.touched"
+              placeholder="1234567890"
+            />
+            @if (registerForm.get('cedula')?.invalid && registerForm.get('cedula')?.touched) {
+              <p class="mt-1 text-sm text-red-600">Ingresa una cédula válida (6-10 dígitos)</p>
+            }
+          </div>
+
+          <div>
+            <label for="fullName" class="block text-sm font-medium text-gray-700 mb-2">
+              Nombre completo
+            </label>
+            <input
+              id="fullName"
+              type="text"
+              formControlName="fullName"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+              [class.border-red-300]="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
+              placeholder="Juan Pérez"
+            />
+            @if (registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched) {
+              <p class="mt-1 text-sm text-red-600">Ingresa tu nombre completo</p>
+            }
+          </div>
+
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+              Contraseña
+            </label>
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+              [class.border-red-300]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+              placeholder="••••••••"
+            />
+            @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+              <p class="mt-1 text-sm text-red-600">Mínimo 6 caracteres</p>
+            }
+          </div>
+
+          <div>
+            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+              Teléfono (opcional)
+            </label>
+            <input
+              id="phone"
+              type="tel"
+              formControlName="phone"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+              [class.border-red-300]="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched"
+              placeholder="3001234567"
+            />
+          </div>
+
+          <div class="flex items-start gap-3">
+            <input
+              id="acceptTerms"
+              type="checkbox"
+              formControlName="acceptTerms"
+              class="w-5 h-5 mt-0.5 text-sky-500 rounded focus:ring-sky-500"
+            />
+            <label for="acceptTerms" class="text-sm text-gray-600">
+              Acepto el tratamiento de mis datos personales conforme a la
+              <a href="#" class="text-sky-500 hover:text-sky-600">Ley 1581 de 2012</a>
+              de protección de datos de Colombia.
+            </label>
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              type="button"
+              (click)="goBack()"
+              class="flex-1 py-4 border-2 border-gray-200 text-gray-700 rounded-xl font-bold text-lg hover:bg-gray-50 transition"
+            >
+              Atrás
+            </button>
+            <button
+              type="submit"
+              [disabled]="loading()"
+              class="flex-1 py-4 bg-sky-500 text-white rounded-xl font-bold text-lg hover:bg-sky-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              @if (loading()) {
+                <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Creando...
+              } @else {
+                Crear cuenta
+              }
+            </button>
+          </div>
+        </form>
+      }
+
+      <!-- Login Link -->
+      <div class="mt-6 text-center">
+        <span class="text-gray-600">¿Ya tienes cuenta?</span>
+        <a routerLink="/auth/login" class="ml-1 text-sky-500 hover:text-sky-600 font-medium">
+          Ingresar
+        </a>
+      </div>
+    </div>
+
+    <!-- Back Link -->
+    <div class="text-center mt-6">
+      <a routerLink="/" class="text-gray-500 hover:text-gray-600 font-medium">
+        ← Volver al inicio
+      </a>
+    </div>
   </div>
 </div>

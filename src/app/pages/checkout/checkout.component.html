@@ -1,4 +1,239 @@
-<div class="min-h-screen p-6">
-  <h1 class="text-3xl font-bold text-sky-600">checkout</h1>
-  <p class="mt-2 text-gray-600">Coming soon...</p>
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Empty Cart State -->
+    @if (cartItems().length === 0 && !orderComplete()) {
+      <div class="text-center py-16">
+        <div class="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+          <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Tu carrito está vacío</h2>
+        <p class="text-gray-600 mb-6">Agrega exámenes para continuar con tu orden</p>
+        <button
+          (click)="goToSearch()"
+          class="px-6 py-3 bg-sky-500 text-white rounded-xl font-bold hover:bg-sky-600 transition"
+        >
+          Buscar exámenes
+        </button>
+      </div>
+    }
+
+    <!-- Order Complete State -->
+    @if (orderComplete() && createdOrder()) {
+      <div class="text-center">
+        <!-- Success Message -->
+        <div class="w-20 h-20 mx-auto mb-6 bg-emerald-100 rounded-full flex items-center justify-center">
+          <svg class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">¡Orden creada exitosamente!</h2>
+        <p class="text-gray-600 mb-8">Tu número de orden es: <span class="font-bold text-sky-500">{{ createdOrder()?.orderNumber }}</span></p>
+
+        <!-- Walk-in Ticket -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 max-w-md mx-auto mb-8">
+          <div class="border-b border-dashed border-gray-300 pb-6 mb-6">
+            <p class="text-gray-500 text-sm uppercase tracking-wide mb-1">Código para el laboratorio</p>
+            <p class="text-5xl font-bold text-sky-500 tracking-widest">{{ createdOrder()?.walkInTicket?.ticketCode }}</p>
+          </div>
+
+          <div class="space-y-4 text-left">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Laboratorio:</span>
+              <span class="font-medium text-gray-900">{{ createdOrder()?.pos?.name }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Dirección:</span>
+              <span class="font-medium text-gray-900 text-right">{{ createdOrder()?.pos?.address }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Total:</span>
+              <span class="font-bold text-sky-500">${{ createdOrder()?.totalAmount | number }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Válido hasta:</span>
+              <span class="font-medium text-gray-900">{{ formatDate(createdOrder()?.walkInTicket?.expiresAt || '') }}</span>
+            </div>
+          </div>
+
+          <!-- QR Placeholder -->
+          <div class="mt-6 pt-6 border-t border-dashed border-gray-300">
+            <div class="w-32 h-32 mx-auto bg-gray-100 rounded-lg flex items-center justify-center">
+              <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4h2v-4zM6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <p class="mt-3 text-sm text-gray-500">Presenta este código en el laboratorio</p>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            routerLink="/orders"
+            class="px-6 py-3 bg-sky-500 text-white rounded-xl font-bold hover:bg-sky-600 transition"
+          >
+            Ver mis órdenes
+          </a>
+          <a
+            routerLink="/"
+            class="px-6 py-3 border-2 border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition"
+          >
+            Volver al inicio
+          </a>
+        </div>
+      </div>
+    }
+
+    <!-- Checkout Form -->
+    @if (cartItems().length > 0 && !orderComplete()) {
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">Finalizar compra</h1>
+
+      <!-- Error -->
+      @if (error()) {
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800">
+          {{ error() }}
+        </div>
+      }
+
+      <div class="grid lg:grid-cols-2 gap-8">
+        <!-- Left Column: Cart & Guest Form -->
+        <div class="space-y-6">
+          <!-- Cart Summary -->
+          <div class="bg-white rounded-2xl shadow-sm p-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">Resumen del carrito</h2>
+
+            <div class="flex items-center gap-2 mb-4 text-sm text-gray-600">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              {{ getPosName() }}
+            </div>
+
+            <div class="space-y-4">
+              @for (item of cartItems(); track $index) {
+                <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                  <div class="flex-1">
+                    <h3 class="font-medium text-gray-900">{{ item.service.name }}</h3>
+                    <p class="text-sm text-gray-500">${{ item.service.basePrice | number }} c/u</p>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <button
+                      (click)="updateQuantity($index, -1)"
+                      class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600"
+                    >
+                      −
+                    </button>
+                    <span class="w-8 text-center font-medium">{{ item.quantity }}</span>
+                    <button
+                      (click)="updateQuantity($index, 1)"
+                      class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600"
+                    >
+                      +
+                    </button>
+                    <button
+                      (click)="removeItem($index)"
+                      class="ml-2 p-2 text-red-500 hover:bg-red-50 rounded-lg"
+                    >
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-200">
+              <div class="flex items-center justify-between text-xl font-bold">
+                <span>Total</span>
+                <span class="text-sky-500">${{ getTotal() | number }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Guest Checkout Form -->
+          @if (!isLoggedIn()) {
+            <div class="bg-white rounded-2xl shadow-sm p-6">
+              <h2 class="text-xl font-bold text-gray-900 mb-4">Datos de contacto</h2>
+              <p class="text-gray-600 mb-4 text-sm">Ingresa tus datos para recibir confirmación de tu orden</p>
+
+              <form [formGroup]="guestForm" class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Correo electrónico</label>
+                  <input
+                    type="email"
+                    formControlName="email"
+                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    [class.border-red-300]="guestForm.get('email')?.invalid && guestForm.get('email')?.touched"
+                    placeholder="tu@email.com"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Cédula</label>
+                  <input
+                    type="text"
+                    formControlName="cedula"
+                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    [class.border-red-300]="guestForm.get('cedula')?.invalid && guestForm.get('cedula')?.touched"
+                    placeholder="1234567890"
+                  />
+                </div>
+              </form>
+            </div>
+          }
+        </div>
+
+        <!-- Right Column: Payment & Action -->
+        <div class="space-y-6">
+          <!-- Payment Info -->
+          <div class="bg-white rounded-2xl shadow-sm p-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">Método de pago</h2>
+
+            <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-bold text-emerald-800">Pago en el laboratorio</h3>
+                  <p class="text-emerald-700 text-sm mt-1">
+                    No necesitas pagar ahora. Presenta tu código en el laboratorio seleccionado y realiza el pago allí.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <div class="bg-white rounded-2xl shadow-sm p-6">
+            <button
+              (click)="createOrder()"
+              [disabled]="loading()"
+              class="w-full py-4 bg-emerald-500 text-white rounded-xl font-bold text-lg hover:bg-emerald-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              @if (loading()) {
+                <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Creando orden...
+              } @else {
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Confirmar orden - Pagar en laboratorio
+              }
+            </button>
+
+            <p class="mt-4 text-center text-sm text-gray-500">
+              Al confirmar, aceptas nuestros
+              <a href="#" class="text-sky-500 hover:text-sky-600">términos y condiciones</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
 </div>

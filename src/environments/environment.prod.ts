@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: '/api/v1',
-  appName: 'KURA',
+  b2cApiUrl: '/b2c-api/v1',
+  enterpriseApiUrl: '/api/v1',
 };

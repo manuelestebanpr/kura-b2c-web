@@ -1,17 +1,14 @@
-// Model interfaces for KURA B2C API
+// Model interfaces for KURA APIs
+// Must match actual API response structures
 
 export interface SearchResponse {
+  id: string;
   code: string;
   name: string;
   description?: string;
-  type: 'SINGLE' | 'BUNDLE';
-  categoryCode: string;
-  categoryName: string;
+  serviceType: 'SINGLE' | 'BUNDLE';
+  category?: string;
   basePrice: number;
-  requiresFasting?: boolean;
-  requiresAppointment?: boolean;
-  estimatedDurationMinutes?: number;
-  items?: BundleItem[];
 }
 
 export interface BundleItem {
@@ -24,25 +21,18 @@ export interface PosResponse {
   id: string;
   name: string;
   address: string;
-  phone?: string;
-  email?: string;
-  latitude?: number;
-  longitude?: number;
-  openingHours?: string;
-  isActive: boolean;
+  city: string;
+  department: string;
 }
 
+// Enterprise API AuthResponse — token is null (cookie-only), user info is flat
 export interface AuthResponse {
-  token: string;
-  user: User;
-}
-
-export interface User {
-  id: string;
+  token: string | null;
+  userId: string;
   email: string;
   fullName: string;
-  cedula: string;
-  phone?: string;
+  role: string;
+  message?: string;
 }
 
 export interface RegisterRequest {
@@ -51,6 +41,7 @@ export interface RegisterRequest {
   fullName: string;
   cedula: string;
   phone?: string;
+  consentLey1581: boolean;
 }
 
 export interface CreateOrderRequest {
@@ -67,33 +58,30 @@ export interface OrderItemRequest {
 
 export interface OrderResponse {
   orderNumber: string;
-  status: 'PENDING' | 'PAID' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+  status: 'PENDING' | 'CONFIRMED' | 'IN_PROGRESS' | 'SAMPLE_TAKEN' | 'COMPLETED' | 'CANCELLED';
   createdAt: string;
-  totalAmount: number;
+  total: number;
   items: OrderItemResponse[];
-  pos: PosResponse;
-  patient?: User;
   walkInTicket?: WalkInTicket;
+  pos?: { name: string; address: string; phone?: string };
 }
 
 export interface OrderItemResponse {
   serviceCode: string;
   serviceName: string;
   quantity: number;
-  unitPrice: number;
-  totalPrice: number;
+  price: number;
+  unitPrice?: number;
 }
 
 export interface WalkInTicket {
   ticketCode: string;
   expiresAt: string;
-  qrCode?: string;
 }
 
 export interface ShareResponse {
-  uuid: string;
   patientName: string;
-  serviceName: string;
+  serviceName: string | null;
   resultData: string;
   sharedAt: string;
   expiresAt: string;

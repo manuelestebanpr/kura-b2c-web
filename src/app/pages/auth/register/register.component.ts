@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
+import { RegisterRequest } from '../../../models/api.models';
 
 type RegisterStep = 'email' | 'otp' | 'form';
 
@@ -108,21 +109,22 @@ export class RegisterComponent {
     this.loading.set(true);
     this.error.set(null);
 
-    const data = {
+    const data: RegisterRequest = {
       email: this.email(),
       password: this.registerForm.value.password,
       fullName: this.registerForm.value.fullName,
       cedula: this.registerForm.value.cedula,
       phone: this.registerForm.value.phone || undefined,
+      consentLey1581: this.registerForm.value.consentLey1581 ?? true,
     };
 
     this.apiService.register(data).subscribe({
       next: (response) => {
         this.authService.setAuth({
-          userId: response.user.id,
-          email: response.user.email,
-          fullName: response.user.fullName,
-          role: 'USER'
+          userId: response.userId,
+          email: response.email,
+          fullName: response.fullName,
+          role: response.role ?? 'PATIENT'
         });
         this.loading.set(false);
         this.router.navigate(['/']);

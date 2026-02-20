@@ -151,13 +151,13 @@
             <div class="p-6">
               <div class="flex items-start justify-between mb-3">
                 <span
-                  [class]="service.type === 'BUNDLE'
+                  [class]="service.serviceType === 'BUNDLE'
                     ? 'px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-semibold'
                     : 'px-3 py-1 bg-sky-100 text-sky-700 rounded-full text-xs font-semibold'"
                 >
-                  {{ service.type === 'BUNDLE' ? ('SEARCH.TYPE_BUNDLE' | translate) : ('SEARCH.TYPE_SINGLE' | translate) }}
+                  {{ service.serviceType === 'BUNDLE' ? ('SEARCH.TYPE_BUNDLE' | translate) : ('SEARCH.TYPE_SINGLE' | translate) }}
                 </span>
-                @if (service.type === 'BUNDLE') {
+                @if (service.serviceType === 'BUNDLE') {
                   <input
                     type="checkbox"
                     [checked]="selectedForCompare().includes(service.code)"
@@ -168,7 +168,7 @@
               </div>
 
               <h3 class="text-xl font-bold text-gray-900 mb-2">{{ service.name }}</h3>
-              <p class="text-sm text-gray-500 mb-3">{{ service.categoryName }}</p>
+              <p class="text-sm text-gray-500 mb-3">{{ service.category }}</p>
               <p class="text-gray-600 text-sm mb-4">{{ service.description || ('SEARCH.NO_DESCRIPTION' | translate) }}</p>
 
               <div class="flex items-center justify-between">
@@ -194,23 +194,14 @@
             <!-- Expanded Content -->
             @if (expandedService() === service.code) {
               <div class="px-6 pb-6 border-t border-gray-100 pt-4">
-                @if (service.type === 'BUNDLE' && service.items && service.items.length > 0) {
+                @if (service.serviceType === 'BUNDLE') {
                   <div class="mb-4">
                     <h4 class="font-semibold text-gray-900 mb-2">{{ 'SEARCH.BUNDLE_INCLUDES' | translate }}</h4>
-                    <ul class="space-y-1">
-                      @for (item of service.items; track item.code) {
-                        <li class="flex items-center gap-2 text-sm text-gray-600">
-                          <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                          </svg>
-                          {{ item.name }}
-                        </li>
-                      }
-                    </ul>
+                    <p class="text-sm text-gray-500 italic">Bundle details available after selecting a laboratory.</p>
                   </div>
                 }
 
-                @if (service.requiresFasting) {
+                @if (false) {
                   <div class="flex items-center gap-2 text-amber-600 text-sm mb-4">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />

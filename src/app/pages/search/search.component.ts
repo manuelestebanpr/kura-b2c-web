@@ -38,7 +38,7 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     // Load PoS locations
     this.apiService.getPosLocations().subscribe({
-      next: (pos) => this.posLocations.set(pos.filter(p => p.isActive)),
+      next: (pos) => this.posLocations.set(pos),
       error: () => this.error.set('COMMON.ERROR'),
     });
 
@@ -98,7 +98,7 @@ export class SearchComponent implements OnInit {
 
   getSelectedBundles(): SearchResponse[] {
     const codes = this.selectedForCompare();
-    return this.searchResults().filter((s) => codes.includes(s.code) && s.type === 'BUNDLE');
+    return this.searchResults().filter((s) => codes.includes(s.code) && s.serviceType === 'BUNDLE');
   }
 
   addToCart(service: SearchResponse): void {
@@ -118,19 +118,18 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  getBundleItemNames(service: SearchResponse): string[] {
-    return service.items?.map((i) => i.name) || [];
+  // Bundle item comparison is not yet available — the search API returns flat results
+  // without nested bundle items. These will be populated in Phase 2 when the API
+  // includes bundle composition in search results.
+  getBundleItemNames(_service: SearchResponse): string[] {
+    return [];
   }
 
-  getAllUniqueItemsFromBundles(bundles: SearchResponse[]): string[] {
-    const items = new Set<string>();
-    bundles.forEach((b) => {
-      b.items?.forEach((i) => items.add(i.name));
-    });
-    return Array.from(items).sort();
+  getAllUniqueItemsFromBundles(_bundles: SearchResponse[]): string[] {
+    return [];
   }
 
-  bundleHasItem(bundle: SearchResponse, itemName: string): boolean {
-    return bundle.items?.some((i) => i.name === itemName) || false;
+  bundleHasItem(_bundle: SearchResponse, _itemName: string): boolean {
+    return false;
   }
 }

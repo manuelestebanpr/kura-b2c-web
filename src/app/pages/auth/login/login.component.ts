@@ -43,10 +43,10 @@ export class LoginComponent {
     this.apiService.login(email, password).subscribe({
       next: (response) => {
         this.authService.setAuth({
-          userId: response.user.id,
-          email: response.user.email,
-          fullName: response.user.fullName,
-          role: 'USER'
+          userId: response.userId,
+          email: response.email,
+          fullName: response.fullName,
+          role: response.role ?? 'PATIENT'
         });
         this.loading.set(false);
         this.router.navigate(['/']);

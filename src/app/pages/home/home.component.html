@@ -38,8 +38,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="indicator.icon" />
               </svg>
             </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ indicator.title }}</h3>
-            <p class="text-gray-600">{{ indicator.description }}</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ indicator.titleKey | translate }}</h3>
+            <p class="text-gray-600">{{ indicator.descKey | translate }}</p>
           </div>
         }
       </div>

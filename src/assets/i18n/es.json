@@ -192,7 +192,8 @@
   },
   "FOOTER": {
     "COPYRIGHT": "© 2026 KURA — Colombia",
-    "TAGLINE": "Tu salud, nuestra prioridad"
+    "TAGLINE": "Tu salud, nuestra prioridad",
+    "LAB_PORTAL": "Portal de Laboratorios"
   },
   "COMMON": {
     "LOADING": "Cargando...",

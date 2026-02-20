@@ -40,18 +40,18 @@ export class HomeComponent {
   trustIndicators = [
     {
       icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
-      title: 'Laboratorios Certificados',
-      description: 'Todos nuestros aliados cumplen con estándares ISO',
+      titleKey: 'HOME.TRUST_CERTIFIED',
+      descKey: 'HOME.TRUST_CERTIFIED_DESC',
     },
     {
       icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
-      title: 'Resultados en 24h',
-      description: 'La mayoría de exámenes listos en menos de un día',
+      titleKey: 'HOME.TRUST_RESULTS',
+      descKey: 'HOME.TRUST_RESULTS_DESC',
     },
     {
       icon: 'M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z',
-      title: 'Paga en el Laboratorio',
-      description: 'Sin pagos anticipados, paga cuando te atiendan',
+      titleKey: 'HOME.TRUST_PAY',
+      descKey: 'HOME.TRUST_PAY_DESC',
     },
   ];
 }
